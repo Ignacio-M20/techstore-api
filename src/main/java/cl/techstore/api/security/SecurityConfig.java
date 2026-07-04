@@ -3,6 +3,7 @@ package cl.techstore.api.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -36,7 +37,7 @@ public class SecurityConfig {
             // Reglas de autorización
             .authorizeHttpRequests(auth -> auth
                 // El endpoint de login es público
-                .requestMatchers("/auth/login").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/productos/**").permitAll()
                 // Todos los demás endpoints requieren autenticación
                 .anyRequest().authenticated()
             )
