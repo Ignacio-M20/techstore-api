@@ -35,10 +35,15 @@ public class SecurityConfig {
             )
 
             // Reglas de autorización
-            .authorizeHttpRequests(auth -> auth
-                // El endpoint de login es público
+           .authorizeHttpRequests(auth -> auth
+                // Login es público: aquí se genera el token, no puede exigir uno
+                .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                // Catálogo de solo lectura es público (consulta de productos)
                 .requestMatchers(HttpMethod.GET, "/api/productos/**").permitAll()
-                // Todos los demás endpoints requieren autenticación
+                // Escritura sobre productos exige JWT válido (así se sabe quién audita)
+                .requestMatchers(HttpMethod.POST, "/api/productos/**").authenticated()
+                .requestMatchers(HttpMethod.PUT, "/api/productos/**").authenticated()
+                .requestMatchers(HttpMethod.DELETE, "/api/productos/**").authenticated()
                 .anyRequest().authenticated()
             )
 
