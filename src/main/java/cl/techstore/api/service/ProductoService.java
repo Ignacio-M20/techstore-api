@@ -21,6 +21,13 @@ public class ProductoService {
         return productoRepository.findByActivoTrue();
     }
 
+
+
+    public Producto obtenerPorId(Long id) {
+        return productoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado con ID: " + id));
+    }
+
     public Producto crear(ProductoDTO dto) {
         Producto producto = new Producto();
         producto.setNombre(dto.getNombre());

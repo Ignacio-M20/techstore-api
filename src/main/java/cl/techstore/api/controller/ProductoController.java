@@ -46,6 +46,26 @@ public class ProductoController {
      * Body: ProductoDTO (nombre, descripcion, precio, stock, categoria, activo)
      * Respuesta: 201 Created + producto creado
      */
+
+
+    /**
+     * Obtiene un producto específico por su ID.
+     *
+     * GET /api/productos/{id}
+     * Respuesta: 200 OK + producto encontrado, 404 si no existe
+     */
+    @GetMapping("/{id}")
+    public ResponseEntity<?> obtenerPorId(@PathVariable Long id) {
+        try {
+            Producto producto = productoService.obtenerPorId(id);
+            return ResponseEntity.ok(producto);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+
+
     @PostMapping
     public ResponseEntity<Producto> crear(@RequestBody ProductoDTO dto) {
         Producto nuevo = productoService.crear(dto);
