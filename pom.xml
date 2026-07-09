@@ -28,6 +28,13 @@
 
 
 
+         <!-- Spring AOP (para auditoría con @Aspect) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+
+
         <!-- AWS SDK v2 - SQS -->
         <dependency>
             <groupId>software.amazon.awssdk</groupId>
