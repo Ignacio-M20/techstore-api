@@ -49,4 +49,42 @@ public class AuditoriaService {
             System.err.println("Error publicando evento de auditoría: " + e.getMessage());
         }
     }
+
+    @Async
+    public void publicarEventoLogin(String usuario) {
+        try {
+            Map<String, Object> payload = new LinkedHashMap<>();
+            payload.put("accion", "LOGIN");
+            payload.put("usuario", usuario);
+            payload.put("fecha", Instant.now().toString());
+
+            String json = mapper.writeValueAsString(payload);
+            sqsClient.sendMessage(SendMessageRequest.builder()
+                    .queueUrl(queueUrl)
+                    .messageBody(json)
+                    .build());
+        } catch (Exception e) {
+            System.err.println("Error publicando evento de login: " + e.getMessage());
+        }
+    }
+
+    @Async
+    public void publicarEventoConsulta(Long productoId, String nombre) {
+        try {
+            Map<String, Object> payload = new LinkedHashMap<>();
+            payload.put("accion", "CONSULTAR");
+            payload.put("productoId", productoId);
+            payload.put("nombre", nombre);
+            payload.put("usuario", "anonimo"); // GET es público, no hay JWT
+            payload.put("fecha", Instant.now().toString());
+
+            String json = mapper.writeValueAsString(payload);
+            sqsClient.sendMessage(SendMessageRequest.builder()
+                    .queueUrl(queueUrl)
+                    .messageBody(json)
+                    .build());
+        } catch (Exception e) {
+            System.err.println("Error publicando evento de consulta: " + e.getMessage());
+        }
+    }
 }
